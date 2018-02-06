@@ -47,13 +47,16 @@ if(isset($api->json->title) && isset($api->json->email) && isset($api->json->sit
 
 			// Start creating stuff
 			try {
-				$user = $api->get_or_create_user_by_email($api->json->email, $api->json->site_name);
+				$user = $api->get_or_create_user_by_email($api->json->email, $api->json->site_name, $api->json->password);
 			} catch(MultiSite_JSON_API\UserCreationError $e) {
 				$api->json_exception($e);
 				die();
 			}
 			try {
-				$site = $api->create_site($api->json->title,
+				$site = $api->create_site(
+					$api->json->domain,
+					$api->json->path,
+					$api->json->title,
 					$api->json->site_name,
 					$user->ID);
 			} catch(MultiSite_JSON_API\SiteCreationException $e) {

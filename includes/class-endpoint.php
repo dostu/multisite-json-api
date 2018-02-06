@@ -126,14 +126,10 @@ class Endpoint {
 		return $newdomain;
 	}
 
-	public function full_path($sitename, $current_site = null) {
+	public function full_path($path, $current_site = null) {
 		if(empty($current_site))
 			$current_site = get_current_site();
-		if(is_subdomain_install()) {
-			$path = $current_site->path;
-		} else {
-			$path = $current_site->path . $sitename . '/';
-		}
+		$path = $current_site->path . $path . '/';
 		return $path;
 	}
 
@@ -145,7 +141,7 @@ class Endpoint {
 	 * @param username string The username
 	 * @return user WP_User The Wordpress user object
 	 */
-	public function get_or_create_user_by_email($dirty_email, $username) {
+	public function get_or_create_user_by_email($dirty_email, $username, $password) {
 		$email = sanitize_email($dirty_email);
 		if($email === "")
 			throw new UserCreationError('Error creating user: email is invalid');
@@ -159,7 +155,6 @@ class Endpoint {
 			return $user;
 		} else {
 			// Create a new user with a random password
-			$password = wp_generate_password(12, false);
 			$user_id = wpmu_create_user($username, $password, $email);
 			wp_new_user_notification($user_id, $password);
 			// Its possible for the $user_id to be false here, but it seems to
@@ -176,10 +171,10 @@ class Endpoint {
 	 * @param user_id The ID of the admin user for this site
 	 * @return site Object An objectified version of the site
 	 */
-	public function create_site($title, $site_name, $user_id) {
+	public function create_site($domain, $path, $title, $site_name, $user_id) {
 		$current_site = get_current_site();
-		$site_id = wpmu_create_blog($this->full_domain($site_name, $current_site),
-			$this->full_path($site_name, $current_site),
+		$site_id = wpmu_create_blog($domain,
+			$this->full_path($path, $current_site),
 			$title,
 			$user_id,
 			array('public' => true),
