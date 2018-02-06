@@ -1,3 +1,6 @@
+This is a fork of multisite-json-api plugin.
+URL: https://github.com/dostu/multisite-json-api
+
 ![Travis CI Build status](https://travis-ci.org/remkade/multisite-json-api.svg?branch=master) [![Code Climate](https://codeclimate.com/github/remkade/multisite-json-api.png)](https://codeclimate.com/github/remkade/multisite-json-api)
 Wordpress Multisite JSON API
 ============================
@@ -49,7 +52,7 @@ Create Site
 -----------
 - **URL:** /wp-content/plugins/multisite-json-api/endpoints/create-site.php
 - **Method:** POST
-- **Payload example:** `{"email": "user@example.com", "site_name": "awesomeblog", "title": "Awesome Blog"}` 
+- **Payload example:** `{"email": "user@example.com", "site_name": "awesomeblog", "title": "Awesome Blog"}`
 - **Description:** Creates a site. If the email address does not exist this will create a new user with that email address. The `site_name` is the the path or subdomain you would like to use.
 
 List Sites
